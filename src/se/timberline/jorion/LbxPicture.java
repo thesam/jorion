@@ -58,23 +58,14 @@ public class LbxPicture {
 				nextByte = blob.readUInt8();
 				if (nextByte != -1) {
 					int pixelCounter = 1;
-					if ((nextByte >= 0xE0 && nextByte <= 0xEF)
-							&& lineModeEnabled) { // TODO:
-													// Find
-													// out
-													// upper
-													// limit,
-													// can
-													// it
-													// be
-													// related
-													// to
-													// the
-													// 4
-													// skipped
-													// bytes?
-						pixelCounter += nextByte & 0x0F;
-						nextByte = blob.readUInt8();
+					if (lineModeEnabled) {
+						if ((nextByte >= 0xE0 && nextByte <= 0xEF)) {
+							pixelCounter += nextByte & 0x0F;
+							nextByte = blob.readUInt8();
+						} else if (nextByte >= 0xF0 && nextByte <= 0xFF) {
+							pixelCounter += 16 + (nextByte & 0x0F);
+							nextByte = blob.readUInt8();
+						}
 					}
 					while (pixelCounter > 0) {
 						Color color = getColorFromPalette(nextByte);
