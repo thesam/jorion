@@ -33,6 +33,9 @@ public class BinaryBlob {
 	}
 
 	public Integer readUInt8() {
+		if (currentOffset >= content.size()) {
+			return -1;
+		}
 		return content.get(currentOffset++);
 	}
 
