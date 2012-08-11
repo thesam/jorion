@@ -3,6 +3,8 @@ package se.timberline.jorion;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LbxPicture {
 	private final int width;
@@ -38,31 +40,18 @@ public class LbxPicture {
 		int currentY = 0;
 		System.err.println("Drawing " + width2 + " x " + height2);
 		do {
-			g.setColor(Color.BLACK);
+
 			nextByte = blob.readUInt8();
-			if (nextByte == 0x80) {
-				nextByte = blob.readUInt8();
-				nextByte = blob.readUInt8();
-				nextByte = blob.readUInt8();
-				nextByte = blob.readUInt8();
-			}
 			if (nextByte != -1) {
 				int pixelCounter = 1;
-				if ((nextByte & 0xF0) == 0xE0) {
+				if (nextByte >= 0xE0 && nextByte <= 0xEF) { // TODO: Find out upper limit, can it be related to the 4 skipped bytes?
 					pixelCounter += nextByte & 0x0F;
 					nextByte = blob.readUInt8();
 				}
 				while (pixelCounter > 0) {
-					if (nextByte == 0x28) {
-						g.setColor(new Color(36,56,101));
-					}
-					if (nextByte == 0x30) {
-						g.setColor(new Color(36, 60, 125));
-					}
-					if (nextByte == 0x20) {
-						g.setColor(new Color(32, 48, 81));
-					}
-					System.err.println("Draw to " + currentX + "-" +  currentY);
+					Color color = getColorFromPalette(nextByte);
+					g.setColor(color);
+//					System.err.println("Draw to " + currentX + "-" + currentY);
 					g.drawLine(currentX, currentY, currentX, currentY);
 					currentY++;
 					pixelCounter--;
@@ -71,10 +60,32 @@ public class LbxPicture {
 			if (currentY >= getHeight()) {
 				currentY = 0;
 				currentX++;
+				nextByte = blob.readUInt8();
+				nextByte = blob.readUInt8();
+				nextByte = blob.readUInt8();
+				nextByte = blob.readUInt8();
 			}
 		} while (nextByte != -1);
 
 		// g.drawRect(0, 0, width2, height2);
+	}
+
+	private Color getColorFromPalette(int nextByte) {
+		Color color = null;
+		Map<Integer,Color> palette = new HashMap<Integer,Color>();
+		
+		palette.put(0x20,new Color(32, 48, 81));
+		palette.put(0x28,new Color(36, 56, 101));
+		palette.put(0x30,new Color(36, 60, 125));
+		palette.put(0xBF,new Color(97, 73, 0));
+		palette.put(0xC0,new Color(150, 113, 0));
+		
+		if (palette.containsKey(nextByte)) {
+			color = palette.get(nextByte);
+		} else {
+			color = Color.BLACK;
+		}
+		return color;
 	}
 
 }
