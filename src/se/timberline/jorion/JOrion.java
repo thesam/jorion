@@ -30,6 +30,7 @@ public class JOrion {
 	private List<LbxEntry> entries;
 	private JTable table;
 	private SuperTableModel tableModel;
+	private LbxPicturePanel picturePanel;
 
 	/**
 	 * Launch the application.
@@ -78,7 +79,7 @@ public class JOrion {
 		frmLbxBrowser.setTitle("LBX Browser");
 		frmLbxBrowser.setBounds(100, 100, 450, 300);
 		frmLbxBrowser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmLbxBrowser.getContentPane().setLayout(new GridLayout(2, 0, 10, 10));
+		frmLbxBrowser.getContentPane().setLayout(new GridLayout(3, 0, 10, 10));
 
 		JPanel panel_2 = new JPanel();
 		frmLbxBrowser.getContentPane().add(panel_2);
@@ -109,6 +110,13 @@ public class JOrion {
 					System.err.println(System.currentTimeMillis());
 					tableModel.setContent(content);
 					table.revalidate();
+					try {
+						picturePanel.setPicture(LbxPicture.createFrom(entry.getContent()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					picturePanel.repaint();
 					System.err.println(System.currentTimeMillis());
 				}
 			}
@@ -125,6 +133,9 @@ public class JOrion {
 		panel_3.add(scrollPane_1);
 		table = new JTable(tableModel);
 		scrollPane_1.setViewportView(table);
+		
+		picturePanel = new LbxPicturePanel();
+		frmLbxBrowser.getContentPane().add(picturePanel);
 	}
 
 }

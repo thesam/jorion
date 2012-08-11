@@ -32,11 +32,11 @@ public class BinaryBlob {
 		return new BinaryBlob(content);
 	}
 
-	public Integer readUInt8() throws IOException {
+	public Integer readUInt8() {
 		return content.get(currentOffset++);
 	}
 
-	public Integer readUInt16() throws IOException {
+	public Integer readUInt16() {
 		int firstInt = readUInt8();
 		int secondInt = readUInt8();
 		if (firstInt == -1 || secondInt == -1) {
@@ -45,7 +45,7 @@ public class BinaryBlob {
 		return (secondInt << 8) | firstInt;
 	}
 
-	public Integer readUInt32() throws IOException {
+	public Integer readUInt32() {
 		int firstInt = readUInt16();
 		int secondInt = readUInt16();
 		if (firstInt == -1 || secondInt == -1) {
@@ -54,7 +54,7 @@ public class BinaryBlob {
 		return (secondInt << 16) | firstInt;
 	}
 
-	public void seek(int offset) throws IOException {
+	public void seek(int offset) {
 		currentOffset = offset;
 	}
 
@@ -74,5 +74,11 @@ public class BinaryBlob {
 
 	public BinaryBlob subBlob(Integer offset, int size) {
 		return new BinaryBlob(content.subList(offset, offset+size));
+	}
+
+	public BinaryBlob duplicate() {
+		BinaryBlob binaryBlob = new BinaryBlob(content);
+		binaryBlob.seek(currentOffset);
+		return binaryBlob;
 	}
 }

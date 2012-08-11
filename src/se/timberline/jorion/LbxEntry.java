@@ -19,7 +19,7 @@ public class LbxEntry {
 	}
 
 	public BinaryBlob getContent() {
-		return content;
+		return content.duplicate();
 	}
 	
 	@Override
