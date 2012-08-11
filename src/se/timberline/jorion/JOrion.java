@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
 
 public class JOrion {
 
@@ -27,7 +28,8 @@ public class JOrion {
 	private JList fileList;
 	private JList entryList;
 	private List<LbxEntry> entries;
-	private JTextPane textPane;
+	private JTable table;
+	private SuperTableModel tableModel;
 
 	/**
 	 * Launch the application.
@@ -57,12 +59,12 @@ public class JOrion {
 
 	private void fillList() throws IOException {
 		LbxArchiveReader reader = new LbxArchiveReader(
-				BinaryFileReader.createFromFile(new File("test/VORTEX.LBX")));
+				BinaryBlob.createFromFile(new File("test/VORTEX.LBX")));
 		LbxArchive archive = reader.getArchive();
 		entries = archive.getEntries();
 		List<String> entryNames = new LinkedList<String>();
 		for (LbxEntry lbxEntry : entries) {
-			entryNames.add(lbxEntry.getName());
+			entryNames.add(lbxEntry.toString());
 		}
 		entryList.setListData(entryNames.toArray());
 
@@ -102,9 +104,12 @@ public class JOrion {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (arg0.getSource() == entryList) {
 					int index = entryList.getSelectedIndex();
-					System.err.println("Selection changed: " + index);
 					LbxEntry entry = entries.get(index);
-					textPane.setText("You selected " + entry.getName());
+					List<Integer> content = entry.getContent().toList();
+					System.err.println(System.currentTimeMillis());
+					tableModel.setContent(content);
+					table.revalidate();
+					System.err.println(System.currentTimeMillis());
 				}
 			}
 		});
@@ -113,10 +118,13 @@ public class JOrion {
 		JPanel panel_3 = new JPanel();
 		frmLbxBrowser.getContentPane().add(panel_3);
 		panel_3.setLayout(new GridLayout(1, 0, 0, 0));
-
-		textPane = new JTextPane();
-		textPane.setEditable(false);
-		panel_3.add(textPane);
+		
+		tableModel = new SuperTableModel();
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panel_3.add(scrollPane_1);
+		table = new JTable(tableModel);
+		scrollPane_1.setViewportView(table);
 	}
 
 }

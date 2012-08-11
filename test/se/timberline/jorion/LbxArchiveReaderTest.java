@@ -14,7 +14,7 @@ public class LbxArchiveReaderTest {
 
 	@Before
 	public void setup() throws Exception {
-		BinaryFileReader reader = BinaryFileReader.createFromFile(new File("test/VORTEX.LBX"));
+		BinaryBlob reader = BinaryBlob.createFromFile(new File("test/VORTEX.LBX"));
 		lbxArchiveReader = new LbxArchiveReader(reader);
 		archive = lbxArchiveReader.getArchive();
 	}
@@ -32,5 +32,10 @@ public class LbxArchiveReaderTest {
 	@Test
 	public void canReadNameOfSecondEntry() throws Exception {
 		assertEquals("STARLORD",archive.getEntries().get(1).getName());
+	}
+	
+	@Test
+	public void canReadContentFromFirstEntry() throws Exception {
+		assertEquals("VORTEX",archive.getEntries().get(0).getContent());
 	}
 }
