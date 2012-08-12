@@ -164,7 +164,7 @@ public class JOrion {
 		LbxArchiveReader reader = new LbxArchiveReader(
 				BinaryBlob.createFromFile(new File("test/FONTS.LBX")));
 		LbxArchive archive = reader.getArchive();
-		LbxEntry paletteEntry = archive.getEntries().get(2);
+		LbxEntry paletteEntry = archive.getEntries().get(6);
 		
 		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry.getContent()));
 		frmLbxBrowser.getContentPane().add(picturePanel);

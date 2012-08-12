@@ -14,40 +14,46 @@ public class LbxPalette {
 	public static LbxPalette createFrom(BinaryBlob blob) {
 		Map<Integer, Color> palette = new HashMap<Integer, Color>();
 
-		int index = 0;
+		for (int index = 0; index < 0x100; index++) {
+			float color1 = blob.readUInt8();
+			float color2 = blob.readUInt8();
+			float color3 = blob.readUInt8();
+			color1 /= 0x3F;
+			color2 /= 0x3F;
+			color3 /= 0x3F;
+			System.err.printf("%x: %d %d %d\n",index,(int)(color1*255),(int)(color2*255),(int)(color3*255));
+			palette.put(index, new Color(color1, color2, color3));
+		}
 		// Each color value is only 6 bits!
-		int byte0 = -1;
-		int byte1 = -1;
-		int byte2 = blob.readUInt8();
-		boolean odd = false;
-		do {
-			byte0 = byte2;
-			byte1 = blob.readUInt8();
-			byte2 = blob.readUInt8();
-			if (byte0 != -1 && byte1 != -1 && byte2 != -1) {
-				float color1 = 0;
-				float color2 = 0;
-				float color3 = 0;
-				if (!odd) {
-					color1 = byte0 >> 2;
-					color2 = ((byte0 & 0x03) << 4) | ((byte1 & 0xF0) >> 4);
-					color3 = ((byte1 & 0x0F) << 2) | ((byte2 & 0x60) >> 6);
-				} else {
-					color1 = byte0 & 0x3f;
-					color2 = ((byte1 & 0xfc) >> 2);
-					color3 = ((byte1 & 0x03) << 4) | ((byte2 & 0xF0) >> 4);
-				}
-				color1 /= 0x3F;
-				color2 /= 0x3F;
-				color3 /= 0x3F;
-				System.err.printf("%x: %d %d %d\n",index,(int)(color1*255),(int)(color2*255),(int)(color3*255));
-				palette.put(index, new Color(color1, color2, color3));
-				index++;
-				odd = !odd;
-			}
-			// nextByte = color3;
-
-		} while (byte2 != -1);
+//		boolean odd = false;
+//		do {
+//			byte0 = byte2;
+//			byte1 = blob.readUInt8();
+//			byte2 = blob.readUInt8();
+//			if (byte0 != -1 && byte1 != -1 && byte2 != -1) {
+//				float color1 = 0;
+//				float color2 = 0;
+//				float color3 = 0;
+//				if (!odd) {
+//					color1 = byte0 >> 2;
+//					color2 = ((byte0 & 0x03) << 4) | ((byte1 & 0xF0) >> 4);
+//					color3 = ((byte1 & 0x0F) << 2) | ((byte2 & 0x60) >> 6);
+//				} else {
+//					color1 = byte0 & 0x3f;
+//					color2 = ((byte1 & 0xfc) >> 2);
+//					color3 = ((byte1 & 0x03) << 4) | ((byte2 & 0xF0) >> 4);
+//				}
+//				color1 /= 0x3F;
+//				color2 /= 0x3F;
+//				color3 /= 0x3F;
+//				System.err.printf("%x: %d %d %d\n",index,(int)(color1*255),(int)(color2*255),(int)(color3*255));
+//				palette.put(index, new Color(color1, color2, color3));
+//				index++;
+//				odd = !odd;
+//			}
+//			// nextByte = color3;
+//
+//		} while (byte2 != -1);
 
 //		 palette.put(0x20, new Color(32, 48, 81));
 //		 palette.put(0x28, new Color(36, 56, 101));
