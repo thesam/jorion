@@ -12,7 +12,7 @@ public class LbxPicturePanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		if (picture != null) {
-			picture.draw(g);
+			picture.draw(new PaletteBasedGraphics(g));
 		}
 	}
 

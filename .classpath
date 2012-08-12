@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="D:/MinaProgram/eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="D:/MinaProgram/eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
 	<classpathentry kind="lib" path="D:/MinaProgram/eclipse/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar" sourcepath="D:/MinaProgram/eclipse/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="3pp/mockito-all-1.9.5-rc1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
