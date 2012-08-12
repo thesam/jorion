@@ -4,20 +4,24 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class LbxPicture {
-	private static final int LAST_OFFSET_OF_HEADER_OFFSET = 0x12;
+	private static final int FRAMES_OFFSET = 0x12;
 	private final int width;
 	private final int height;
 	private final BinaryBlob blob;
 	private final int numberOfFrames;
+	private final List<Integer> frameOffsets;
 
-	public LbxPicture(int width, int height, int numberOfFrames, BinaryBlob blob) {
+	public LbxPicture(int width, int height, int numberOfFrames, BinaryBlob blob, List<Integer> frameOffsets) {
 		this.width = width;
 		this.height = height;
 		this.numberOfFrames = numberOfFrames;
 		this.blob = blob;
+		this.frameOffsets = frameOffsets;
 	}
 
 	public static LbxPicture createFrom(BinaryBlob blob) throws IOException {
@@ -27,10 +31,14 @@ public class LbxPicture {
 		int height = blob.readUInt16();
 		int unknown = blob.readUInt16();
 		int numberOfFrames = blob.readUInt16();
-		blob.seek(LAST_OFFSET_OF_HEADER_OFFSET);
-		int lastOffsetOfHeader = blob.readUInt16();
+		blob.seek(FRAMES_OFFSET);
+		List<Integer> frameOffsets = new LinkedList<Integer>();
+		for (int frame = 0; frame < numberOfFrames; frame++) {
+			int frameOffset = blob.readUInt32();
+			frameOffsets.add(frameOffset);
+		}
 		//TODO: Parse more values, let the blob be just the picture data
-		return new LbxPicture(width, height, numberOfFrames, blob.subBlob(lastOffsetOfHeader+1));
+		return new LbxPicture(width, height, numberOfFrames, blob, frameOffsets);
 	}
 
 	public int getWidth() {
@@ -42,6 +50,7 @@ public class LbxPicture {
 	}
 
 	public void draw(PaletteBasedGraphics g) {
+		blob.seek(frameOffsets.get(0)+1); // skip first byte in frame. TODO: Why?
 		int nextByte = -1;
 		int currentX = 0;
 		int currentY = 0;
@@ -84,6 +93,10 @@ public class LbxPicture {
 		} while (nextByte != -1);
 
 		// g.drawRect(0, 0, width2, height2);
+	}
+
+	public List<Integer> getFrameOffsets() {
+		return frameOffsets;
 	}
 
 }

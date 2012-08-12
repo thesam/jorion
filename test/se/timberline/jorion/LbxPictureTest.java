@@ -28,22 +28,27 @@ public class LbxPictureTest {
 		
 		content.add(0xff);
 		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0xff);
-		content.add(0x14);
-		content.add(0x00);
-		content.add(0xff);
+		// Number of frames
+		content.add(0x1);
+		content.add(0x0);
 		
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		content.add(0xff);
+		// Offset of first frame
+		content.add(0x16);
+		content.add(0x00);
+		content.add(0x00);
+		content.add(0x00);
+		// Frame header byte?
+		content.add(0xff);
 		//Column header
 		content.add(LINE_MODE_DISABLED);
 		content.add(0xFF);
@@ -78,6 +83,12 @@ public class LbxPictureTest {
 	@Test
 	public void canParseHeightFromHeader() throws Exception {
 		assertEquals(3,picture.getHeight());
+	}
+	
+	@Test
+	public void canParseFrameOffsets() throws Exception {
+		assertEquals(1,picture.getFrameOffsets().size());
+		assertEquals(new Integer(0x16),picture.getFrameOffsets().get(0));
 	}
 	
 	@Test
