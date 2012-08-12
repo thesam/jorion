@@ -3,6 +3,7 @@ package se.timberline.jorion;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class LbxPicture {
 		int unknown = blob.readUInt16();
 		int numberOfFrames = blob.readUInt16();
 		blob.seek(FRAMES_OFFSET);
-		List<Integer> frameOffsets = new LinkedList<Integer>();
+		List<Integer> frameOffsets = new ArrayList<Integer>();
 		for (int frame = 0; frame < numberOfFrames; frame++) {
 			int frameOffset = blob.readUInt32();
 			frameOffsets.add(frameOffset);

@@ -16,7 +16,7 @@ public class LbxArchiveReader {
 	}
 
 	public LbxArchive getArchive() throws IOException {
-		LinkedList<LbxEntry> entries = new LinkedList<LbxEntry>();
+		List<LbxEntry> entries = new ArrayList<LbxEntry>();
 		
 		int numberOfEntries = reader.readUInt16();
 		

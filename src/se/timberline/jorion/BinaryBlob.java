@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BinaryBlob {
 	public static BinaryBlob createFromFile(File file)
 			throws IOException {
 		FileInputStream fis = new FileInputStream(file);
-		List<Integer> content = new LinkedList<Integer>();
+		List<Integer> content = new ArrayList<Integer>();
 		int nextByte = -1;
 		do {
 			nextByte = fis.read();

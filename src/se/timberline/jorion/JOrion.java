@@ -10,7 +10,9 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,15 +57,28 @@ public class JOrion {
 	 */
 	public JOrion() throws IOException {
 		initialize();
-		fillList();
+		fillFileList();
+//		fillList();
 	}
 
-	private void fillList() throws IOException {
+	private void fillFileList() {
+		String[] files = new File("test/").list(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File arg0, String arg1) {
+				return arg1.endsWith(".LBX");
+			}
+			
+		});
+		fileList.setListData(files);
+	}
+
+	private void fillList(File file) throws IOException {
 		LbxArchiveReader reader = new LbxArchiveReader(
-				BinaryBlob.createFromFile(new File("test/VORTEX.LBX")));
+				BinaryBlob.createFromFile(file));
 		LbxArchive archive = reader.getArchive();
 		entries = archive.getEntries();
-		List<String> entryNames = new LinkedList<String>();
+		List<String> entryNames = new ArrayList<String>();
 		for (LbxEntry lbxEntry : entries) {
 			entryNames.add(lbxEntry.toString());
 		}
@@ -73,8 +88,9 @@ public class JOrion {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IOException 
 	 */
-	private void initialize() {
+	private void initialize() throws IOException {
 		frmLbxBrowser = new JFrame();
 		frmLbxBrowser.setTitle("LBX Browser");
 		frmLbxBrowser.setBounds(100, 100, 450, 300);
@@ -90,6 +106,18 @@ public class JOrion {
 		panel.setLayout(new GridLayout(1, 0, 0, 0));
 
 		fileList = new JList();
+		fileList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				if (arg0.getSource() == fileList) {
+					String fileName = (String) fileList.getSelectedValue();
+					try {
+						fillList(new File("test/" + fileName));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		panel.add(fileList);
 
 		JPanel panel_1 = new JPanel();
@@ -113,7 +141,6 @@ public class JOrion {
 					try {
 						picturePanel.setPicture(LbxPicture.createFrom(entry.getContent()));
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					picturePanel.repaint();
@@ -134,7 +161,12 @@ public class JOrion {
 		table = new JTable(tableModel);
 		scrollPane_1.setViewportView(table);
 		
-		picturePanel = new LbxPicturePanel();
+		LbxArchiveReader reader = new LbxArchiveReader(
+				BinaryBlob.createFromFile(new File("test/FONTS.LBX")));
+		LbxArchive archive = reader.getArchive();
+		LbxEntry paletteEntry = archive.getEntries().get(2);
+		
+		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry.getContent()));
 		frmLbxBrowser.getContentPane().add(picturePanel);
 	}
 
