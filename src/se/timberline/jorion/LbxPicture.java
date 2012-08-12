@@ -7,20 +7,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LbxPicture {
+	private static final int LAST_OFFSET_OF_HEADER_OFFSET = 0x12;
 	private final int width;
 	private final int height;
 	private final BinaryBlob blob;
+	private final int numberOfFrames;
 
-	public LbxPicture(int width, int height, BinaryBlob blob) {
+	public LbxPicture(int width, int height, int numberOfFrames, BinaryBlob blob) {
 		this.width = width;
 		this.height = height;
+		this.numberOfFrames = numberOfFrames;
 		this.blob = blob;
 	}
 
 	public static LbxPicture createFrom(BinaryBlob blob) throws IOException {
+		// parse header
+		blob.seek(0);
 		int width = blob.readUInt16();
 		int height = blob.readUInt16();
-		return new LbxPicture(width, height, blob);
+		int unknown = blob.readUInt16();
+		int numberOfFrames = blob.readUInt16();
+		blob.seek(LAST_OFFSET_OF_HEADER_OFFSET);
+		int lastOffsetOfHeader = blob.readUInt16();
+		//TODO: Parse more values, let the blob be just the picture data
+		return new LbxPicture(width, height, numberOfFrames, blob.subBlob(lastOffsetOfHeader+1));
 	}
 
 	public int getWidth() {
@@ -33,13 +43,11 @@ public class LbxPicture {
 
 	public void draw(Graphics g) {
 		// blob.seek(0x1F);
-		blob.seek(0x1B);
-		int width2 = getWidth();
-		int height2 = getHeight();
+//		blob.seek(0x1B);
 		int nextByte = -1;
 		int currentX = 0;
 		int currentY = 0;
-		System.err.println("Drawing " + width2 + " x " + height2);
+		System.err.println("Drawing " + width + " x " + height);
 		boolean lineModeEnabled = true;
 		currentX = -1;
 		do {
@@ -91,10 +99,20 @@ public class LbxPicture {
 		palette.put(0x20, new Color(32, 48, 81));
 		palette.put(0x28, new Color(36, 56, 101));
 		palette.put(0x30, new Color(36, 60, 125));
+		palette.put(0x33, new Color(203, 93, 28));
+		palette.put(0x3D, new Color(138, 60, 16));
+		palette.put(0x3E, new Color(125, 56, 16));
+		palette.put(0x44, new Color(85, 36, 8));
 		palette.put(0xBF, new Color(97, 73, 0));
 		palette.put(0xC0, new Color(150, 113, 0));
 		palette.put(0xC1, new Color(203, 150, 0));
 		palette.put(0xED, new Color(170, 121, 77));
+		palette.put(0x38, new Color(174, 81, 24));
+		palette.put(0x35, new Color(190, 89, 24));
+		palette.put(0x32, new Color(211, 97, 28));
+		palette.put(0x31, new Color(209, 101, 28));
+		
+		
 
 		if (palette.containsKey(nextByte)) {
 			color = palette.get(nextByte);

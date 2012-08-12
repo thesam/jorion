@@ -75,13 +75,17 @@ public class BinaryBlob {
 		return content;
 	}
 
-	public BinaryBlob subBlob(Integer offset, int size) {
-		return new BinaryBlob(content.subList(offset, offset+size));
+	public BinaryBlob subBlob(Integer startOffset, int size) {
+		return new BinaryBlob(content.subList(startOffset, startOffset+size));
 	}
 
 	public BinaryBlob duplicate() {
 		BinaryBlob binaryBlob = new BinaryBlob(content);
 		binaryBlob.seek(currentOffset);
 		return binaryBlob;
+	}
+
+	public BinaryBlob subBlob(int startOffset) {
+		return new BinaryBlob(content.subList(startOffset,content.size()));
 	}
 }

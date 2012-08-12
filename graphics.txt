@@ -1,0 +1,11 @@
+0: uint16 width
+2: uint16 height
+
+80 x x x = column header?
+
+28 = draw 1 pixel with color 28 in current column
+
+IF LINE MODE ENABLED (=column header starts with 80):
+Ex 28 = draw 1+x pixel with color 28 in current column
+F7 x = draw 24 = 1 + 16 + 7 
+F0 x = draw 17 = 1 + 16 + 0
