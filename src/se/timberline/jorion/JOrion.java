@@ -58,7 +58,7 @@ public class JOrion {
 	public JOrion() throws IOException {
 		initialize();
 		fillFileList();
-//		fillList();
+		// fillList();
 	}
 
 	private void fillFileList() {
@@ -68,7 +68,7 @@ public class JOrion {
 			public boolean accept(File arg0, String arg1) {
 				return arg1.endsWith(".LBX");
 			}
-			
+
 		});
 		fileList.setListData(files);
 	}
@@ -88,43 +88,50 @@ public class JOrion {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	private void initialize() throws IOException {
 		frmLbxBrowser = new JFrame();
 		frmLbxBrowser.setTitle("LBX Browser");
 		frmLbxBrowser.setBounds(100, 100, 450, 300);
 		frmLbxBrowser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmLbxBrowser.getContentPane().setLayout(new GridLayout(3, 0, 10, 10));
+		frmLbxBrowser.getContentPane().setLayout(new GridLayout(0, 2, 10, 10));
 
-		JPanel panel_2 = new JPanel();
-		frmLbxBrowser.getContentPane().add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
+		tableModel = new SuperTableModel();
+
+		JPanel selectionAndDisplayPanel = new JPanel();
+		frmLbxBrowser.getContentPane().add(selectionAndDisplayPanel);
+		selectionAndDisplayPanel.setLayout(new GridLayout(2, 1, 0, 0));
+
+		JPanel selectionPanel = new JPanel();
+		selectionAndDisplayPanel.add(selectionPanel);
+		selectionPanel.setLayout(new GridLayout(0, 2, 0, 0));
 
 		JPanel panel = new JPanel();
-		panel_2.add(panel);
+		selectionPanel.add(panel);
 		panel.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JScrollPane scrollPane_2 = new JScrollPane();
 		panel.add(scrollPane_2);
-		
-				fileList = new JList();
-				scrollPane_2.setViewportView(fileList);
-				fileList.addListSelectionListener(new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent arg0) {
-						if (arg0.getSource() == fileList) {
-							String fileName = (String) fileList.getSelectedValue();
-							try {
-								fillList(new File("test/" + fileName));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+
+		fileList = new JList();
+		scrollPane_2.setViewportView(fileList);
+		fileList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				if (arg0.getSource() == fileList) {
+					String fileName = (String) fileList.getSelectedValue();
+					try {
+						fillList(new File("test/" + fileName));
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				});
+				}
+			}
+		});
 
 		JPanel panel_1 = new JPanel();
-		panel_2.add(panel_1);
+		selectionPanel.add(panel_1);
 		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -142,7 +149,8 @@ public class JOrion {
 					tableModel.setContent(content);
 					table.revalidate();
 					try {
-						picturePanel.setPicture(LbxPicture.createFrom(entry.getContent()));
+						picturePanel.setPicture(LbxPicture.createFrom(entry
+								.getContent()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -153,24 +161,23 @@ public class JOrion {
 		});
 		scrollPane.setViewportView(entryList);
 
-		JPanel panel_3 = new JPanel();
-		frmLbxBrowser.getContentPane().add(panel_3);
-		panel_3.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		tableModel = new SuperTableModel();
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		panel_3.add(scrollPane_1);
-		table = new JTable(tableModel);
-		scrollPane_1.setViewportView(table);
-		
 		LbxArchiveReader reader = new LbxArchiveReader(
 				BinaryBlob.createFromFile(new File("test/FONTS.LBX")));
 		LbxArchive archive = reader.getArchive();
 		LbxEntry paletteEntry = archive.getEntries().get(4);
 		
-		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry.getContent()));
-		frmLbxBrowser.getContentPane().add(picturePanel);
+		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry
+				.getContent()));
+		selectionAndDisplayPanel.add(picturePanel);
+		
+				JPanel hexPanel = new JPanel();
+				frmLbxBrowser.getContentPane().add(hexPanel);
+				hexPanel.setLayout(new GridLayout(1, 0, 0, 0));
+				
+						JScrollPane scrollPane_1 = new JScrollPane();
+						hexPanel.add(scrollPane_1);
+						table = new JTable(tableModel);
+						scrollPane_1.setViewportView(table);
 	}
 
 }
