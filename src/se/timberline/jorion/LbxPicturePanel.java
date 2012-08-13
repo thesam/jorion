@@ -18,6 +18,8 @@ public class LbxPicturePanel extends JPanel {
 		super.paint(g);
 		if (picture != null) {
 			picture.draw(new PaletteBasedGraphics(g,palette));
+			g.setColor(Color.BLACK);
+			g.drawString(picture.getWidth() + " x " + picture.getHeight() , 0, picture.getHeight() + 25);
 		}
 	}
 

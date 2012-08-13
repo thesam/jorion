@@ -17,7 +17,8 @@ public class LbxPicture {
 	private final int numberOfFrames;
 	private final List<Integer> frameOffsets;
 
-	public LbxPicture(int width, int height, int numberOfFrames, BinaryBlob blob, List<Integer> frameOffsets) {
+	public LbxPicture(int width, int height, int numberOfFrames,
+			BinaryBlob blob, List<Integer> frameOffsets) {
 		this.width = width;
 		this.height = height;
 		this.numberOfFrames = numberOfFrames;
@@ -38,7 +39,7 @@ public class LbxPicture {
 			int frameOffset = blob.readUInt32();
 			frameOffsets.add(frameOffset);
 		}
-		//TODO: Parse more values, let the blob be just the picture data
+		// TODO: Parse more values, let the blob be just the picture data
 		return new LbxPicture(width, height, numberOfFrames, blob, frameOffsets);
 	}
 
@@ -51,18 +52,27 @@ public class LbxPicture {
 	}
 
 	public void draw(PaletteBasedGraphics g) {
-		blob.seek(frameOffsets.get(0)+1); // skip first byte in frame. TODO: Why?
+		blob.seek(frameOffsets.get(0) + 1); // skip first byte in frame. TODO:
+											// Why?
 		int nextByte = -1;
 		int currentX = 0;
 		int currentY = 0;
+		int currentFrame = 0;
 		System.err.println("Drawing " + width + " x " + height);
 		boolean lineModeEnabled = true;
 		currentX = -1;
 		do {
 			currentY = 0;
 			currentX++;
+			if (currentX == getWidth()) {
+				// next frame?
+				currentFrame++;
+				if (frameOffsets.size() > currentFrame) {
+					blob.seek(frameOffsets.get(currentFrame) + 1);
+				}
+			}
 			nextByte = blob.readUInt8();
-			if (nextByte == 0x00) {
+			if (nextByte == 0x0) {
 				lineModeEnabled = false;
 			} else {
 				lineModeEnabled = true;
@@ -75,16 +85,13 @@ public class LbxPicture {
 				if (nextByte != -1) {
 					int pixelCounter = 1;
 					if (lineModeEnabled) {
-						if ((nextByte >= 0xE0 && nextByte <= 0xEF)) {
-							pixelCounter += nextByte & 0x0F;
-							nextByte = blob.readUInt8();
-						} else if (nextByte >= 0xF0 && nextByte <= 0xFF) {
-							pixelCounter += 16 + (nextByte & 0x0F);
+						if (nextByte >= 0xE0) {
+							pixelCounter += nextByte - 0xE0;
 							nextByte = blob.readUInt8();
 						}
 					}
 					while (pixelCounter > 0) {
-						g.drawPixel(currentX,currentY,nextByte);
+						g.drawPixel(currentX, currentY, nextByte);
 						currentY++;
 						pixelCounter--;
 					}

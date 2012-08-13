@@ -104,21 +104,24 @@ public class JOrion {
 		JPanel panel = new JPanel();
 		panel_2.add(panel);
 		panel.setLayout(new GridLayout(1, 0, 0, 0));
-
-		fileList = new JList();
-		fileList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
-				if (arg0.getSource() == fileList) {
-					String fileName = (String) fileList.getSelectedValue();
-					try {
-						fillList(new File("test/" + fileName));
-					} catch (IOException e) {
-						e.printStackTrace();
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		panel.add(scrollPane_2);
+		
+				fileList = new JList();
+				scrollPane_2.setViewportView(fileList);
+				fileList.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent arg0) {
+						if (arg0.getSource() == fileList) {
+							String fileName = (String) fileList.getSelectedValue();
+							try {
+								fillList(new File("test/" + fileName));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
 					}
-				}
-			}
-		});
-		panel.add(fileList);
+				});
 
 		JPanel panel_1 = new JPanel();
 		panel_2.add(panel_1);
@@ -164,7 +167,7 @@ public class JOrion {
 		LbxArchiveReader reader = new LbxArchiveReader(
 				BinaryBlob.createFromFile(new File("test/FONTS.LBX")));
 		LbxArchive archive = reader.getArchive();
-		LbxEntry paletteEntry = archive.getEntries().get(6);
+		LbxEntry paletteEntry = archive.getEntries().get(4);
 		
 		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry.getContent()));
 		frmLbxBrowser.getContentPane().add(picturePanel);
