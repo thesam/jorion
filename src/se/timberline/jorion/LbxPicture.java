@@ -13,17 +13,25 @@ public class LbxPicture {
 	private static final int FRAMES_OFFSET = 0x12;
 	private final int width;
 	private final int height;
-	private final BinaryBlob blob;
-	private final int numberOfFrames;
-	private final List<Integer> frameOffsets;
+//	private final BinaryBlob blob;
+//	private final int numberOfFrames;
+//	private final List<Integer> frameOffsets;
+	private final List<LbxPictureFrame> frames;
 
-	public LbxPicture(int width, int height, int numberOfFrames,
-			BinaryBlob blob, List<Integer> frameOffsets) {
+//	public LbxPicture(int width, int height, int numberOfFrames,
+//			BinaryBlob blob, List<Integer> frameOffsets) {
+//		this.width = width;
+//		this.height = height;
+//		this.numberOfFrames = numberOfFrames;
+//		this.blob = blob;
+//		this.frameOffsets = frameOffsets;
+//	}
+
+	public LbxPicture(int width, int height, List<LbxPictureFrame> frames) {
 		this.width = width;
 		this.height = height;
-		this.numberOfFrames = numberOfFrames;
-		this.blob = blob;
-		this.frameOffsets = frameOffsets;
+		this.frames = frames;
+		
 	}
 
 	public static LbxPicture createFrom(BinaryBlob blob) throws IOException {
@@ -35,12 +43,19 @@ public class LbxPicture {
 		int numberOfFrames = blob.readUInt16();
 		blob.seek(FRAMES_OFFSET);
 		List<Integer> frameOffsets = new ArrayList<Integer>();
-		for (int frame = 0; frame < numberOfFrames; frame++) {
+		// last offset is EOF
+		for (int frame = 0; frame < numberOfFrames+1; frame++) {
 			int frameOffset = blob.readUInt32();
 			frameOffsets.add(frameOffset);
 		}
+		List<LbxPictureFrame> frames = new ArrayList<LbxPictureFrame>();
+		for (int offset = 0; offset < frameOffsets.size()-1; offset++) {
+			int frameSize = frameOffsets.get(offset+1)-frameOffsets.get(offset);
+			BinaryBlob frameData = blob.subBlob(frameOffsets.get(offset), frameSize);
+			frames.add(LbxPictureFrame.createFrom(width,height,frameData));
+		}
 		// TODO: Parse more values, let the blob be just the picture data
-		return new LbxPicture(width, height, numberOfFrames, blob, frameOffsets);
+		return new LbxPicture(width, height, frames);
 	}
 
 	public int getWidth() {
@@ -50,61 +65,11 @@ public class LbxPicture {
 	public int getHeight() {
 		return height;
 	}
-
+	
 	public void draw(PaletteBasedGraphics g) {
-		blob.seek(frameOffsets.get(0) + 1); // skip first byte in frame. TODO:
-											// Why?
-		int nextByte = -1;
-		int currentX = 0;
-		int currentY = 0;
-		int currentFrame = 0;
-		System.err.println("Drawing " + width + " x " + height);
-		boolean lineModeEnabled = true;
-		currentX = -1;
-		do {
-			currentY = 0;
-			currentX++;
-			if (currentX == getWidth()) {
-				// next frame?
-				currentFrame++;
-				if (frameOffsets.size() > currentFrame) {
-					blob.seek(frameOffsets.get(currentFrame) + 1);
-				}
-			}
-			nextByte = blob.readUInt8();
-			if (nextByte == 0x0) {
-				lineModeEnabled = false;
-			} else {
-				lineModeEnabled = true;
-			}
-			nextByte = blob.readUInt8();
-			nextByte = blob.readUInt8();
-			nextByte = blob.readUInt8();
-			while (currentY < getHeight() && nextByte != -1) {
-				nextByte = blob.readUInt8();
-				if (nextByte != -1) {
-					int pixelCounter = 1;
-					if (lineModeEnabled) {
-						if (nextByte >= 0xE0) {
-							pixelCounter += nextByte - 0xE0;
-							nextByte = blob.readUInt8();
-						}
-					}
-					while (pixelCounter > 0) {
-						g.drawPixel(currentX, currentY, nextByte);
-						currentY++;
-						pixelCounter--;
-					}
-				}
-			}
-
-		} while (nextByte != -1);
-
-		// g.drawRect(0, 0, width2, height2);
+		for (int i = 0; i < frames.size(); i++) {
+			g.setOffset(i*width,i*height);
+			frames.get(i).draw(g);
+		}
 	}
-
-	public List<Integer> getFrameOffsets() {
-		return frameOffsets;
-	}
-
 }

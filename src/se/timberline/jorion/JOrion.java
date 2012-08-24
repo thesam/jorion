@@ -145,7 +145,7 @@ public class JOrion {
 					int index = entryList.getSelectedIndex();
 					LbxEntry entry = entries.get(index);
 					List<Integer> content = entry.getContent().toList();
-					System.err.println(System.currentTimeMillis());
+					// System.err.println(System.currentTimeMillis());
 					tableModel.setContent(content);
 					table.revalidate();
 					try {
@@ -155,7 +155,7 @@ public class JOrion {
 						e.printStackTrace();
 					}
 					picturePanel.repaint();
-					System.err.println(System.currentTimeMillis());
+					// System.err.println(System.currentTimeMillis());
 				}
 			}
 		});
@@ -164,20 +164,20 @@ public class JOrion {
 		LbxArchiveReader reader = new LbxArchiveReader(
 				BinaryBlob.createFromFile(new File("test/FONTS.LBX")));
 		LbxArchive archive = reader.getArchive();
-		LbxEntry paletteEntry = archive.getEntries().get(4);
-		
+		LbxEntry paletteEntry = archive.getEntries().get(2);
+
 		picturePanel = new LbxPicturePanel(LbxPalette.createFrom(paletteEntry
 				.getContent()));
 		selectionAndDisplayPanel.add(picturePanel);
-		
-				JPanel hexPanel = new JPanel();
-				frmLbxBrowser.getContentPane().add(hexPanel);
-				hexPanel.setLayout(new GridLayout(1, 0, 0, 0));
-				
-						JScrollPane scrollPane_1 = new JScrollPane();
-						hexPanel.add(scrollPane_1);
-						table = new JTable(tableModel);
-						scrollPane_1.setViewportView(table);
+
+		JPanel hexPanel = new JPanel();
+		frmLbxBrowser.getContentPane().add(hexPanel);
+		hexPanel.setLayout(new GridLayout(1, 0, 0, 0));
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		hexPanel.add(scrollPane_1);
+		table = new JTable(tableModel);
+		scrollPane_1.setViewportView(table);
 	}
 
 }
