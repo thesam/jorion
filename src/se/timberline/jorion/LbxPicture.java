@@ -1,13 +1,8 @@
 package se.timberline.jorion;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class LbxPicture {
 	private static final int FRAMES_OFFSET = 0x12;
@@ -39,6 +34,7 @@ public class LbxPicture {
 		blob.seek(0);
 		int width = blob.readUInt16();
 		int height = blob.readUInt16();
+		@SuppressWarnings("unused")
 		int unknown = blob.readUInt16();
 		int numberOfFrames = blob.readUInt16();
 		blob.seek(FRAMES_OFFSET);
@@ -52,7 +48,7 @@ public class LbxPicture {
 		for (int offset = 0; offset < frameOffsets.size()-1; offset++) {
 			int frameSize = frameOffsets.get(offset+1)-frameOffsets.get(offset);
 			BinaryBlob frameData = blob.subBlob(frameOffsets.get(offset), frameSize);
-			frames.add(LbxPictureFrame.createFrom(width,height,frameData));
+			frames.add(new LbxPictureFrame(width,height,frameData));
 		}
 		// TODO: Parse more values, let the blob be just the picture data
 		return new LbxPicture(width, height, frames);
@@ -68,8 +64,12 @@ public class LbxPicture {
 	
 	public void draw(PaletteBasedGraphics g) {
 		for (int i = 0; i < frames.size(); i++) {
-			g.setOffset(i*width,i*height);
+			g.setOffset(i*width,0);
 			frames.get(i).draw(g);
 		}
+	}
+
+	public List<LbxPictureFrame> getFrames() {
+		return frames;
 	}
 }

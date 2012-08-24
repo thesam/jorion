@@ -1,7 +1,5 @@
 package se.timberline.jorion;
 
-import java.util.List;
-
 public class LbxEntry {
 
 	private final String name;

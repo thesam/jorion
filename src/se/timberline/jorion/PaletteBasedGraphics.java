@@ -2,8 +2,6 @@ package se.timberline.jorion;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PaletteBasedGraphics {
 	

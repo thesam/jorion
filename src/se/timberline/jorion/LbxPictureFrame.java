@@ -12,10 +12,10 @@ public class LbxPictureFrame {
 		this.blob = frameData;
 	}
 
-	public static LbxPictureFrame createFrom(int width, int height, BinaryBlob frameData) {
-		// TODO Auto-generated method stub
-		return new LbxPictureFrame(width,height,frameData);
-	}
+//	public static LbxPictureFrame createFrom(int width, int height, BinaryBlob frameData) {
+//		// TODO Auto-generated method stub
+//		return new LbxPictureFrame(width,height,frameData);
+//	}
 	
 	public void draw(PaletteBasedGraphics g) {
 		blob.seek(1); // skip first byte in frame. TODO:

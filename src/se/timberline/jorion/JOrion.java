@@ -1,11 +1,9 @@
 package se.timberline.jorion;
 
-import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.io.File;
@@ -13,12 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.ListSelectionModel;

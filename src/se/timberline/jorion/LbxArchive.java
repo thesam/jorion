@@ -1,6 +1,5 @@
 package se.timberline.jorion;
 
-import java.io.File;
 import java.util.List;
 
 public class LbxArchive {
