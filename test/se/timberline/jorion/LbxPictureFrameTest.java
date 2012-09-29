@@ -1,5 +1,6 @@
 package se.timberline.jorion;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -24,7 +25,7 @@ public class LbxPictureFrameTest {
 		g = mock(PaletteBasedGraphics.class);
 		content = new ArrayList<Integer>();
 
-		frame = new LbxPictureFrame(1, 3, new BinaryBlob(content));
+		frame = new LbxPictureFrame(1, 11, new BinaryBlob(content));
 		// Frame header byte?
 		content.add(0xff);
 	}
@@ -66,24 +67,155 @@ public class LbxPictureFrameTest {
 		verify(g).drawPixel(0, 2, 0xcc);
 	}
 
+	//Based on STARMAP.LBX - MAP_BUTT
 	@Test
-	public void canIgnoreColor3With0F30Header() throws Exception {
+	public void canIgnoreColor3InCorrectPlaceWith0F30Header() throws Exception {
 		// Column header
 		content.add(0x0);
 		content.add(0xF);
 		content.add(0x3);
 		content.add(0x0);
 		// Column content
+		content.add(0x4);
+		content.add(0xFB);
+		content.add(0x6);
 		content.add(0x3);
 		content.add(0x1);
 		content.add(0x1);
 		content.add(0x1);
+		content.add(0x1);
+		content.add(0x3);
+		content.add(0x1);
+		content.add(0x6);
+		content.add(0xFA);
+		content.add(0x3);
 
 		frame.draw(g);
 
-		verify(g).drawPixel(0, 0, 0x1);
-		verify(g).drawPixel(0, 1, 0x1);
-		verify(g).drawPixel(0, 2, 0x1);
+		verify(g).drawPixel(0, 0, 0x4);
+		verify(g).drawPixel(0, 1, 0xFB);
+		verify(g).drawPixel(0, 2, 0x6);
+		verify(g).drawPixel(0, 3, 0x1);
+		verify(g).drawPixel(0, 4, 0x1);
+		verify(g).drawPixel(0, 5, 0x1);
+		verify(g).drawPixel(0, 6, 0x1);
+		verify(g).drawPixel(0, 7, 0x1);
+		verify(g).drawPixel(0, 8, 0x6);
+		verify(g).drawPixel(0, 9, 0xFA);
+		verify(g).drawPixel(0, 10, 0x3);
+	}
+	
+	//Based on STARMAP.LBX - MAP_BUTT
+	@Test
+	public void canIgnoreColor3InCorrectPlaceWith0E70Header() throws Exception {
+		// Column header
+		content.add(0x0);
+		content.add(0xE);
+		content.add(0x7);
+		content.add(0x0);
+		// Column content
+		content.add(0x4);
+		content.add(0xFB);
+		content.add(0x6);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x3);
+		content.add(0x1);
+		content.add(0x6);
+		content.add(0xFA);
+		content.add(0x3);
+
+		frame.draw(g);
+
+		verify(g).drawPixel(0, 0, 0x4);
+		verify(g).drawPixel(0, 1, 0xFB);
+		verify(g).drawPixel(0, 2, 0x6);
+		verify(g).drawPixel(0, 3, 0x1);
+		verify(g).drawPixel(0, 4, 0x1);
+		verify(g).drawPixel(0, 5, 0x1);
+		verify(g).drawPixel(0, 6, 0x1);
+		verify(g).drawPixel(0, 7, 0x1);
+		verify(g).drawPixel(0, 8, 0x6);
+		verify(g).drawPixel(0, 9, 0xFA);
+		verify(g).drawPixel(0, 10, 0x3);
+	}
+	
+	//Based on STARMAP.LBX - MAP_BUTT
+	@Test
+	public void canIgnoreColor6InCorrectPlaceWith0E40Header() throws Exception {
+		// Column header
+		content.add(0x0);
+		content.add(0xE);
+		content.add(0x4);
+		content.add(0x0);
+		// Column content
+		content.add(0x4);
+		content.add(0xFB);
+		content.add(0x6);
+		content.add(0x1);
+		content.add(0x6);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x6);
+		content.add(0xFA);
+		content.add(0x3);
+
+		frame.draw(g);
+
+		verify(g).drawPixel(0, 0, 0x4);
+		verify(g).drawPixel(0, 1, 0xFB);
+		verify(g).drawPixel(0, 2, 0x6);
+		verify(g).drawPixel(0, 3, 0x1);
+		verify(g).drawPixel(0, 4, 0x1);
+		verify(g).drawPixel(0, 5, 0x1);
+		verify(g).drawPixel(0, 6, 0x1);
+		verify(g).drawPixel(0, 7, 0x1);
+		verify(g).drawPixel(0, 8, 0x6);
+		verify(g).drawPixel(0, 9, 0xFA);
+		verify(g).drawPixel(0, 10, 0x3);
+	}
+	
+	//Based on STARMAP.LBX - MAP_BUTT
+	@Test
+	public void canIgnoreColorsInCorrectPlaceWith01030Header() throws Exception {
+		// Column header
+		content.add(0x0);
+		content.add(0x10);
+		content.add(0x3);
+		content.add(0x0);
+		// Column content
+		content.add(0x4);
+		content.add(0xFB);
+		content.add(0x6);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x1);
+		content.add(0x3);
+		content.add(0x1);
+		content.add(0x6);
+		content.add(0xFA);
+		content.add(0x3);
+
+		frame.draw(g);
+
+		verify(g).drawPixel(0, 0, 0x4);
+		verify(g).drawPixel(0, 1, 0xFB);
+		verify(g).drawPixel(0, 2, 0x6);
+		verify(g).drawPixel(0, 3, 0x1);
+		verify(g).drawPixel(0, 4, 0x1);
+		verify(g).drawPixel(0, 5, 0x1);
+		verify(g).drawPixel(0, 6, 0x1);
+		verify(g).drawPixel(0, 7, 0x1);
+		verify(g).drawPixel(0, 8, 0x6);
+		verify(g).drawPixel(0, 9, 0xFA);
+		verify(g).drawPixel(0, 10, 0x3);		
 	}
 
 }
