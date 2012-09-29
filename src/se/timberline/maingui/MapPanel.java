@@ -9,28 +9,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import se.timberline.jorion.model.Planet;
+import se.timberline.jorion.model.Universe;
 
 public class MapPanel extends JPanel {
 
-	private final List<Planet> planets;
+	private final Universe planets;
 	private int topLeftX;
 	private int topLeftY;
 
-	public MapPanel(List<Planet> planets) {
-		this.planets = planets;
+	public MapPanel(Universe planets2) {
+		this.planets = planets2;
 		this.topLeftX = 0;
 		this.topLeftY = 0;
 		this.setBackground(Color.BLACK);
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		g.setColor(Color.WHITE);
-		for (Planet p : planets) {
-			ImageIcon img = new ImageIcon("resource\\yellow_star.png");
-			g.drawImage(img.getImage(),p.x*50,p.y*50,null);
-		}
+		this.setLayout(null);
 	}
 
 }

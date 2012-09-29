@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class UniverseGenerator {
-	public List<Planet> getPlanets() {
+	public Universe getUniverse() {
 		List<Planet> planets = new ArrayList<Planet>();
 		for (int i = 0; i < 100; i++) {
 			Planet p = new Planet();
@@ -13,6 +13,6 @@ public class UniverseGenerator {
 			p.y = new Random().nextInt() % 20;
 			planets.add(p);
 		}
-		return planets;
+		return new Universe(planets);
 	}
 }
