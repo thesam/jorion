@@ -23,12 +23,13 @@ public class MainView implements StateChangeListener {
 	private final MainController controller;
 	private PlanetLabel selectedPlanet;
 	private InfoPanel infoPanel;
+	private JFrame frame;
 	
 	public MainView(Universe planets, final MainController controller) {
 
 		this.planets = planets;
 		this.controller = controller;
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		
 		JPanel mapPanel = new MapPanel(planets);
@@ -138,7 +139,7 @@ public class MainView implements StateChangeListener {
 		}
 		imgLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		selectedPlanet = imgLabel;
-		infoPanel.setSelectedObject(selectedPlanet.getPlanet());
+		infoPanel.setSelectedObject(selectedPlanet);
 	}
 
 	@Override
