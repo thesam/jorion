@@ -1,4 +1,4 @@
-package se.timberline.maingui;
+package se.timberline.jorion.maingui;
 
 import javax.swing.JFrame;
 

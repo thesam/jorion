@@ -1,8 +1,9 @@
-package se.timberline.maingui;
+package se.timberline.jorion.maingui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
@@ -13,13 +14,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import se.timberline.jorion.controller.StateChangeListener;
 import se.timberline.jorion.model.Planet;
 import se.timberline.jorion.model.Universe;
 
-public class MainView {
+public class MainView implements StateChangeListener {
 	private final Universe planets;
 	private final MainController controller;
 	private PlanetLabel selectedPlanet;
+	private InfoPanel infoPanel;
 	
 	public MainView(Universe planets, final MainController controller) {
 
@@ -70,8 +73,7 @@ public class MainView {
 			mapPanel.add(imgLabel);
 		}
 		
-		JPanel sidePanel = new JPanel();
-		sidePanel.add(new JLabel("Sol"));
+		infoPanel = new InfoPanel();
 		
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.add(createButton("Game"));
@@ -81,10 +83,43 @@ public class MainView {
 		bottomPanel.add(createButton("Races"));
 		bottomPanel.add(createButton("Planets"));
 		bottomPanel.add(createButton("Tech"));
-		bottomPanel.add(createButton("Next Turn"));
+		JButton createButton = createButton("Next Turn");
+		createButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				controller.nextTurn();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		bottomPanel.add(createButton);
 		
 		frame.add(mapPanel,BorderLayout.CENTER);
-		frame.add(sidePanel,BorderLayout.EAST);
+		frame.add(infoPanel,BorderLayout.EAST);
 		frame.add(bottomPanel,BorderLayout.SOUTH);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,6 +138,13 @@ public class MainView {
 		}
 		imgLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		selectedPlanet = imgLabel;
+		infoPanel.setSelectedObject(selectedPlanet.getPlanet());
+	}
+
+	@Override
+	public void stateUpdated() {
+		System.err.println("Update GUI");
+		infoPanel.updateFromSelectedObject();
 	}
 	
 	

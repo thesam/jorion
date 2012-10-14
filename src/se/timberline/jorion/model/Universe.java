@@ -14,5 +14,12 @@ public class Universe {
 		return planets;
 	}
 
+	public void tickOneYear() {
+		for (Planet planet : planets) {
+			planet.tickOneYear();
+		}
+		
+	}
+
 
 }

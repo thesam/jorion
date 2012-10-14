@@ -1,4 +1,4 @@
-package se.timberline.maingui;
+package se.timberline.jorion.maingui;
 
 import java.awt.Color;
 import java.awt.Graphics;
