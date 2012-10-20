@@ -2,7 +2,6 @@ package se.timberline.jorion.maingui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,9 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 import se.timberline.jorion.controller.StateChangeListener;
 import se.timberline.jorion.model.Planet;
@@ -143,7 +140,7 @@ public class MainView implements StateChangeListener {
 	}
 
 	@Override
-	public void stateUpdated() {
+	public void modelUpdated() {
 		System.err.println("Update GUI");
 		infoPanel.updateFromSelectedObject();
 	}

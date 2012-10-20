@@ -22,8 +22,8 @@ import javax.swing.JTable;
 public class JOrion {
 
 	private JFrame frmLbxBrowser;
-	private JList fileList;
-	private JList entryList;
+	private JList<String> fileList;
+	private JList<String> entryList;
 	private List<LbxEntry> entries;
 	private JTable table;
 	private SuperTableModel tableModel;
@@ -77,7 +77,7 @@ public class JOrion {
 		for (LbxEntry lbxEntry : entries) {
 			entryNames.add(lbxEntry.toString());
 		}
-		entryList.setListData(entryNames.toArray());
+		entryList.setListData((String[]) entryNames.toArray());
 
 	}
 
@@ -110,7 +110,7 @@ public class JOrion {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		panel.add(scrollPane_2);
 
-		fileList = new JList();
+		fileList = new JList<String>();
 		scrollPane_2.setViewportView(fileList);
 		fileList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -132,7 +132,7 @@ public class JOrion {
 		JScrollPane scrollPane = new JScrollPane();
 		panel_1.add(scrollPane);
 
-		entryList = new JList();
+		entryList = new JList<String>();
 		entryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		entryList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {

@@ -1,14 +1,9 @@
 package se.timberline.jorion.maingui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import se.timberline.jorion.model.Planet;
 import se.timberline.jorion.model.Universe;
 
 public class MapPanel extends JPanel {

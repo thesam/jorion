@@ -5,10 +5,12 @@ public class Planet {
 	public int y = 0;
 	private String name;
 	private int population;
+	private int factories;
 	
 	public Planet() {
 		this.name = "" + Math.random();
 		this.population = 1;
+		this.factories = 1;
 	}
 	
 	public String getName() {
@@ -21,6 +23,10 @@ public class Planet {
 	
 	public void tickOneYear() {
 		population++;
+	}
+	
+	public double getUnadjustedProduction() {
+		return 0.53*population+factories;
 	}
 
 }

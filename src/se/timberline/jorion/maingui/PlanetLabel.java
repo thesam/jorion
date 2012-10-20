@@ -21,8 +21,11 @@ public class PlanetLabel extends JLabel {
 
 	public void updateInfoPanel(InfoPanel infoPanel) {
 		infoPanel.removeAll();
-		infoPanel.add(new JLabel(p.getName() + "\n" + "Pop: " + p.getPopulation()));
+		infoPanel.add(new JLabel("Name: " + p.getName()));
+		infoPanel.add(new JLabel("Pop: " + p.getPopulation()));
+		infoPanel.add(new JLabel("Prod: " + "xx" + "(" + p.getUnadjustedProduction() + ")"));
 		infoPanel.validate();
+		infoPanel.repaint();
 	}
 
 }

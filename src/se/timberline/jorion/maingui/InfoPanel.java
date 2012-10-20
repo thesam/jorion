@@ -3,8 +3,6 @@ package se.timberline.jorion.maingui;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import se.timberline.jorion.model.Planet;
-
 public class InfoPanel extends JPanel {
 //	private JLabel name;
 	private PlanetLabel planet;

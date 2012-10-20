@@ -24,12 +24,9 @@ public class MainController {
 	}
 	
 	private void notifyListeners() {
-		// TODO Auto-generated method stub
 		for (StateChangeListener listener : listeners) {
-			listener.stateUpdated();
+			listener.modelUpdated();
 		}
-		
-		
 	}
 
 	public void addNextTurnListener(StateChangeListener listener) {

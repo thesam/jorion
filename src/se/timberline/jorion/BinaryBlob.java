@@ -26,7 +26,7 @@ public class BinaryBlob {
 				content.add(nextByte);
 			}
 		} while (nextByte != -1);
-		
+		fis.close();
 		return new BinaryBlob(content);
 	}
 
