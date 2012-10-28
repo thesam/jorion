@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 
 public class InfoPanel extends JPanel {
 //	private JLabel name;
-	private PlanetLabel planet;
+	private PlanetView planet;
 
 	public InfoPanel() {
 		JLabel name = new JLabel("N/A");
 		add(name); // TODO Auto-generated constructor stub
 	}
 
-	public void setSelectedObject(PlanetLabel planet) {
+	public void setSelectedObject(PlanetView planet) {
 		this.planet = planet;
 		updateFromSelectedObject();
 	}

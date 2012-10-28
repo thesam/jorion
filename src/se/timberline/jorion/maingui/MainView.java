@@ -12,13 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import se.timberline.jorion.controller.StateChangeListener;
+import se.timberline.jorion.model.Coordinates;
 import se.timberline.jorion.model.Planet;
 import se.timberline.jorion.model.Universe;
 
 public class MainView implements StateChangeListener {
 	private final Universe planets;
 	private final MainController controller;
-	private PlanetLabel selectedPlanet;
+	private PlanetView selectedPlanet;
 	private InfoPanel infoPanel;
 	private JFrame frame;
 	
@@ -29,14 +30,13 @@ public class MainView implements StateChangeListener {
 		frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		
-		JPanel mapPanel = new MapPanel(planets);
+		JPanel mapPanel = new MapView(planets);
 		
 		for (Planet p : planets.getPlanets()) {
 			ImageIcon img = new ImageIcon("resource\\yellow_star.png");
-			final PlanetLabel imgLabel = new PlanetLabel(img,p);
+			final PlanetView imgLabel = new PlanetView(img,p);
 			imgLabel.setBounds(p.x*50, p.y*50, img.getIconWidth(), img.getIconHeight());
 			imgLabel.addMouseListener(new MouseListener() {
-
 				@Override
 				public void mouseClicked(java.awt.event.MouseEvent arg0) {
 					System.err.println("Click on planet");
@@ -66,7 +66,6 @@ public class MainView implements StateChangeListener {
 					// TODO Auto-generated method stub
 					
 				}
-				
 			});
 			mapPanel.add(imgLabel);
 		}
@@ -130,7 +129,7 @@ public class MainView implements StateChangeListener {
 		return jButton;
 	}
 	
-	private void updatePlanetSelection(PlanetLabel imgLabel) {
+	private void updatePlanetSelection(PlanetView imgLabel) {
 		if (selectedPlanet != null) {
 			selectedPlanet.setBorder(null);
 		}

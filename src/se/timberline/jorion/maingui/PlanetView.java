@@ -5,11 +5,11 @@ import javax.swing.JLabel;
 
 import se.timberline.jorion.model.Planet;
 
-public class PlanetLabel extends JLabel {
+public class PlanetView extends JLabel {
 
 	private final Planet p;
 
-	public PlanetLabel(ImageIcon img, Planet p) {
+	public PlanetView(ImageIcon img, Planet p) {
 		super(img);
 		this.p = p;
 		// TODO Auto-generated constructor stub

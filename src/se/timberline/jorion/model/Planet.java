@@ -29,4 +29,8 @@ public class Planet {
 		return 0.53*population+factories;
 	}
 
+	public Coordinates getCoordinates() {
+		return new Coordinates(x,y);
+	}
+
 }

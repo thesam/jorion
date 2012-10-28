@@ -17,9 +17,13 @@ public class MainController {
 
 	public void nextTurn() {
 		System.err.println("Next turn!");
-		//processInput
+		
+		//updateParametersFromPlayerActions
+		
+		
 		//updateState
 		universe.tickOneYear();
+		
 		notifyListeners();
 	}
 	
