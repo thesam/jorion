@@ -17,6 +17,7 @@ import se.timberline.jorion.model.Planet;
 import se.timberline.jorion.model.Universe;
 
 public class MainView implements StateChangeListener {
+	private static final int SCALE_FACTOR = 50;
 	private final Universe planets;
 	private final MainController controller;
 	private PlanetView selectedPlanet;
@@ -35,7 +36,11 @@ public class MainView implements StateChangeListener {
 		for (Planet p : planets.getPlanets()) {
 			ImageIcon img = new ImageIcon("resource\\yellow_star.png");
 			final PlanetView imgLabel = new PlanetView(img,p);
-			imgLabel.setBounds(p.x*50, p.y*50, img.getIconWidth(), img.getIconHeight());
+			
+			// coordinates define center of planet			
+			int x = p.x*SCALE_FACTOR  - img.getIconWidth()/2;
+			int y = p.y*SCALE_FACTOR - img.getIconHeight()/2;
+			imgLabel.setBounds(x, y, img.getIconWidth(), img.getIconHeight());
 			imgLabel.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(java.awt.event.MouseEvent arg0) {
