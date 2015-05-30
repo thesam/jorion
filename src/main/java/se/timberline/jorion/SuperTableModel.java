@@ -1,9 +1,8 @@
 package se.timberline.jorion;
 
+import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
 
 public class SuperTableModel extends AbstractTableModel {
 

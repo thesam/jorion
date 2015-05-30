@@ -1,3 +1,5 @@
 *.class
 *.LBX
 *.jar
+.idea/*
+*.iml

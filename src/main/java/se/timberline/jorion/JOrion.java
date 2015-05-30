@@ -1,23 +1,15 @@
 package se.timberline.jorion;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import java.awt.GridLayout;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JScrollPane;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.ListSelectionModel;
-import javax.swing.JTable;
 
 public class JOrion {
 
@@ -61,7 +53,7 @@ public class JOrion {
 
 			@Override
 			public boolean accept(File arg0, String arg1) {
-				return arg1.endsWith(".LBX");
+				return arg1.endsWith(".LBX") || arg1.endsWith(".lbx");
 			}
 
 		});
@@ -77,7 +69,7 @@ public class JOrion {
 		for (LbxEntry lbxEntry : entries) {
 			entryNames.add(lbxEntry.toString());
 		}
-		entryList.setListData((String[]) entryNames.toArray());
+		entryList.setListData( entryNames.toArray(new String[0]));
 
 	}
 
